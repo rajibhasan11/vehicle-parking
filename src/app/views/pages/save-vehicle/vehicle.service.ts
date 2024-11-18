@@ -14,9 +14,7 @@ export class VehicleService {
 
   vehicleStatusOptions: SelectOption[];
 
-  constructor(
-    private request: RequestService
-  ) {
+  constructor(private request: RequestService) {
     this.vehicleTypeOptions = Object.entries(VehicleType).map(x => new SelectOption(x[0], x[1]));
     this.vehicleStatusOptions = Object.entries(ParkingStatus).map(x => new SelectOption(x[0], x[1]));
   }

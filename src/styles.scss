@@ -52,15 +52,15 @@ body {
   border-bottom: 1px solid #e1e1e1;
 }
 
-.mat-snack-bar-container.success {
+.mat-snack-bar-container .success {
   background-color: var(--mat-color-primary);
 }
 
-.mat-snack-bar-container.warn {
+.mat-snack-bar-container .warn {
   background-color: var(--mat-color-warn);
 }
 
-.mat-snack-bar-container.hint {
+.mat-snack-bar-container .hint {
   background-color: var(--mat-color-hint);
 }
 

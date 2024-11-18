@@ -48,7 +48,8 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "moment"
+              "moment",
+              "css-element-queries"
             ]
           },
           "configurations": {

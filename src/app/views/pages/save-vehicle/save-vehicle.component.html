@@ -9,7 +9,7 @@
         </a>
         <mat-icon style="opacity: 0.50;">chevron_right</mat-icon>
         <span class="text-xl text-zinc-700">
-            {{isCreationFlow ? 'Add Vehicle' : 'Edit Vehicle'}}
+            {{isCreationFlow ? 'Add Vehicle' : isEditFlow ? 'Edit Vehicle' : ''}}
         </span>
     </div>
 </div>

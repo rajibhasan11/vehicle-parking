@@ -4,7 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasePage } from '../../../commons/base.page';
 import { SelectOption } from '../../../models/selection';
-import { ToastService } from '../../../services/toast.service';
+import { ToastService } from '../../../services/toast/toast.service';
 import { VehicleService } from './vehicle.service';
 
 @Component({
@@ -54,7 +54,8 @@ export class SaveVehicleComponent extends BasePage implements OnInit {
   }
 
   get isExitTimeRequired(): boolean {
-    return false// this.isEditFlow;
+    return false;
+    return this.isEditFlow;
   }
 
   constructor(

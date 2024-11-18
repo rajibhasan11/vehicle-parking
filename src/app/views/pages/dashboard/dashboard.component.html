@@ -5,13 +5,13 @@
     </button>
 </div>
 
-<div class="p-6 flex flex-col space-y-6">
+<div id="content" class="p-6 flex flex-col space-y-6">
 
-    <mat-card class="w-full " appearance="outlined">
+    <mat-card class="w-full" appearance="outlined">
 
         <mat-card-content>
 
-            <mat-form-field class="w-1/2">
+            <mat-form-field class="w-1/2" [class.w-full]="isSmallScreen">
                 <mat-label>Choose a date</mat-label>
                 <input matInput [(ngModel)]="filterDate" [matDatepicker]="filterDatePicker"
                     (dateChange)="onDateChange()" />
@@ -20,9 +20,10 @@
                 <mat-hint [align]="'end'">MM/DD/YYYY</mat-hint>
             </mat-form-field>
 
-            <div class="h-12 text-zinc-700">
+            <div class="h-12 text-zinc-700 mt-2">
                 Total cars parked {{bll.vehicleInfo?.totalCarParked}}
             </div>
+
             <div class="h-12 text-zinc-700">
                 Total empty slots {{bll.vehicleInfo?.totalEmptySlots}}
             </div>
@@ -39,12 +40,12 @@
         </mat-card-content>
     </mat-card>
 
-    <div class="flex flex-row space-x-4">
+    <div class="w-full flex flex-row items-center gap-6" [class.!flex-wrap]="singleColumn">
 
         <mat-card class="w-full" appearance="outlined">
             <mat-card-content>
                 <div class="resize_chart">
-                    <div id="pie" class="w-full h-full"></div>
+                    <div id="pie" class="!w-full !h-full"></div>
                 </div>
             </mat-card-content>
         </mat-card>

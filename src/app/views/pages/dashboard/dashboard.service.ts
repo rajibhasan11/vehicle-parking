@@ -1,10 +1,9 @@
 import { TitleCasePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
-import * as echarts from 'echarts';
-import { EChartsType, ResizeOpts } from 'echarts';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { BaseService } from '../../../commons/base.service';
 import { format } from '../../../models/time';
+import { ChartService } from '../../../services/chart/chart.service';
 import { RequestService } from '../../../services/request/request.service';
 
 @Injectable()
@@ -15,7 +14,7 @@ export class DashboardService extends BaseService {
   private pieChartOption: any = {
     title: {
       text: 'Parked Vehicles',
-      subtext: '(all vehicles currently parked)',
+      subtext: '(vehicles currently parked)',
       left: 'center'
     },
     tooltip: {
@@ -23,7 +22,8 @@ export class DashboardService extends BaseService {
     },
     legend: {
       orient: 'vertical',
-      left: 'left'
+      left: 'right',
+      top: 'bottom'
     },
     series: {
       type: 'pie',
@@ -42,18 +42,24 @@ export class DashboardService extends BaseService {
   private pieSubject = new Subject<any[]>;
   pie$ = this.pieSubject.asObservable();
 
-  private readonly charts: EChartsType[] = [];
-
   constructor(
     private request: RequestService,
+    private chart: ChartService,
     private titleCase: TitleCasePipe
   ) {
     super();
   }
 
-  protected override onDestroy(): void {
-    this.disposeCharts();
-    super.onDestroy();
+  drawPieChart(parkedVehicles: any[]): void {
+    const opt = this.pieChartOption;
+    const data = parkedVehicles.map(x => {
+      return {
+        name: this.titleCase.transform(x.type),
+        value: x.options?.length || 0
+      };
+    });
+    opt.series.data.push(...data);
+    this.chart.draw('pie', opt);
   }
 
   getVehiclesInfo(date: Date): void {
@@ -64,55 +70,6 @@ export class DashboardService extends BaseService {
   getParkedVehicles(): void {
     const data = this.request.getParkedVehicles();
     this.pieSubject.next(data);
-  }
-
-  drawPieChart(parkedVehicles: any[]): void {
-    const el = document.getElementById('pie')!;
-    const chart = echarts.init(el);
-    this.addChart(chart);
-    const data = parkedVehicles.map(x => {
-      return {
-        name: this.titleCase.transform(x.type),
-        value: x.options?.length || 0
-      };
-    });
-    this.pieChartOption.series.data.push(...data);
-    chart.setOption(this.pieChartOption);
-
-    this.addResizeEvent(chart, this.pieChartOption)
-  }
-
-  private addResizeEvent(chart: EChartsType, opts?: ResizeOpts): void {
-    this.addSubscription(
-      fromEvent(window, 'resize').subscribe((_event: any) => {
-        if (!chart || this.isDestroyed) {
-          return;
-        }
-        chart.resize(opts);
-      }), chart.id
-    );
-  }
-
-  private addChart(chart: EChartsType): void {
-    if (this.charts.includes(chart)) {
-      return;
-    }
-    this.charts.push(chart);
-  }
-
-  private disposeCharts(): void {
-    const length = this.charts.length;
-    for (let i = 0; i < length; i++) {
-      const chart = this.charts[i];
-      this.disposeChart(chart);
-    }
-    this.charts.length = 0;
-  }
-
-  private disposeChart(chart: EChartsType): void {
-    if (chart && !chart.isDisposed()) {
-      chart.dispose();
-    }
   }
 
 }
