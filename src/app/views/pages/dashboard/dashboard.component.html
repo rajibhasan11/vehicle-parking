@@ -1,0 +1,60 @@
+<div class="header h-14 px-6 flex items-center justify-between">
+    <span class="text-xl text-zinc-700">Dashboard</span>
+    <button mat-stroked-button color="primary" (click)="showVehicles()">
+        Vehicles
+    </button>
+</div>
+
+<div class="p-6 flex flex-col space-y-6">
+
+    <mat-card class="w-full " appearance="outlined">
+
+        <mat-card-content>
+
+            <mat-form-field class="w-1/2">
+                <mat-label>Choose a date</mat-label>
+                <input matInput [(ngModel)]="filterDate" [matDatepicker]="filterDatePicker"
+                    (dateChange)="onDateChange()" />
+                <mat-datepicker-toggle matIconSuffix [for]="filterDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #filterDatePicker></mat-datepicker>
+                <mat-hint [align]="'end'">MM/DD/YYYY</mat-hint>
+            </mat-form-field>
+
+            <div class="h-12 text-zinc-700">
+                Total cars parked {{bll.vehicleInfo?.totalCarParked}}
+            </div>
+            <div class="h-12 text-zinc-700">
+                Total empty slots {{bll.vehicleInfo?.totalEmptySlots}}
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 mt-2">
+                @for (v of bll.vehicleInfo?.vehicles; track v.type) {
+                <div class="w-32 flex flex-col items-center border border-slate-300 rounded-sm p-2 pb-0">
+                    <span class="h-8 text-zinc-700">{{v.type | uppercase}}</span>
+                    <span class="h-8 text-zinc-700">{{v.options?.length}}</span>
+                </div>
+                }
+            </div>
+
+        </mat-card-content>
+    </mat-card>
+
+    <div class="flex flex-row space-x-4">
+
+        <mat-card class="w-full" appearance="outlined">
+            <mat-card-content>
+                <div class="resize_chart">
+                    <div id="pie" class="w-full h-full"></div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="w-full" appearance="outlined">
+            <mat-card-content>
+                <div class="resize_chart">
+                    <div id="line" class="w-full h-full"></div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

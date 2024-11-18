@@ -24,9 +24,13 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/vehicle-parking",
+            "outputPath": {
+              "base": "dist/parking",
+              "browser": ""
+            },
             "index": "src/index.html",
             "browser": "src/main.ts",
+            "baseHref": "/parking/",
             "polyfills": [
               "zone.js"
             ],
@@ -41,7 +45,10 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "moment"
+            ]
           },
           "configurations": {
             "production": {

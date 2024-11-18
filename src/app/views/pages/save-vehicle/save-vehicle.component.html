@@ -1,0 +1,168 @@
+<div class="header h-14 px-6 flex flex-row items-center">
+    <div class="flex flex-row space-x-2">
+        <a [routerLink]="['/vehicles']" class="text-xl text-zinc-700 hover:underline underline-offset-4">
+            Viehicles
+        </a>
+        <mat-icon style="opacity: 0.50;">chevron_right</mat-icon>
+        <span class="text-xl text-zinc-700">
+            {{isCreationFlow ? 'Add Vehicle' : 'Edit Vehicle'}}
+        </span>
+    </div>
+</div>
+
+<div class="w-full px-6">
+
+    <form class="w-full mt-6" [formGroup]="form" (ngSubmit)="saveVehicle()">
+
+        <div class="w-full flex flex-row space-x-4">
+            <mat-form-field class="w-full">
+                <mat-label>License Number</mat-label>
+                <input matInput placeholder="Enter License Number" formControlName="licenseNo" required />
+                @if (getControl('licenseNo').invalid) {
+                <mat-error>* Required</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+                <mat-label>Vehicle Type</mat-label>
+                <mat-select formControlName="type" placeholder="Select Vehicle Type" required>
+                    @for (option of vehicleTypeOptions; track option.value) {
+                    <mat-option [value]="option.value">{{option.name}}</mat-option>
+                    }
+                </mat-select>
+                @if (getControl('type').invalid) {
+                <mat-error>* Required</mat-error>
+                }
+            </mat-form-field>
+        </div>
+
+        <div class="w-full flex flex-row space-x-4 mt-4">
+            <mat-form-field class="w-full">
+                <mat-label>Owner Name</mat-label>
+                <input matInput placeholder="Enter Owner Name" formControlName="ownerName" required />
+                @if (getControl('ownerName').invalid) {
+                <mat-error>* Required</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+                <mat-label>Owner Phone</mat-label>
+                <input matInput placeholder="Enter Phone Number" formControlName="ownerPhone" required />
+                @if (getControl('ownerPhone').invalid) {
+                <mat-error>* Required</mat-error>
+                }
+            </mat-form-field>
+        </div>
+
+        <div formGroupName="ownerAddress">
+            <div class="w-full flex flex-row space-x-4 mt-4">
+                <mat-form-field class="w-full">
+                    <mat-label>Street</mat-label>
+                    <input matInput placeholder="Enter Street" formControlName="street" required />
+                    @if (getControl('street', 'ownerAddress').invalid) {
+                    <mat-error>* Required</mat-error>
+                    }
+                </mat-form-field>
+                <mat-form-field class="w-full">
+                    <mat-label>City</mat-label>
+                    <input matInput placeholder="Enter City" formControlName="city" required />
+                    @if (getControl('city', 'ownerAddress').invalid) {
+                    <mat-error>* Required</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="w-full flex flex-row space-x-4 mt-4">
+                <mat-form-field class="w-full">
+                    <mat-label>State</mat-label>
+                    <input matInput placeholder="Enter State" formControlName="state" required />
+                    @if (getControl('state', 'ownerAddress').invalid) {
+                    <mat-error>* Required</mat-error>
+                    }
+                </mat-form-field>
+                <mat-form-field class="w-full">
+                    <mat-label>ZIP</mat-label>
+                    <input matInput placeholder="Enter ZIP" formControlName="zip" required />
+                    @if (getControl('zip', 'ownerAddress').invalid) {
+                    <mat-error>* Required</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div formGroupName="entryTime" class="w-full flex flex-row space-x-4 mt-4">
+            <mat-form-field class="w-full">
+                <mat-label>Entry Date</mat-label>
+                <input matInput placeholder="Enter Entry Date" formControlName="date" required
+                    [matDatepicker]="entryDatePicker" />
+                <mat-datepicker-toggle matIconSuffix [for]="entryDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #entryDatePicker></mat-datepicker>
+                <mat-hint [align]="'end'">MM/DD/YYYY</mat-hint>
+                @if (getControl('date', 'entryTime').invalid) {
+                <mat-error>* Required</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+                <mat-label>Entry Time</mat-label>
+                <input matInput placeholder="Enter Entry Time" formControlName="time" required maxlength="5" />
+                <mat-hint [align]="'end'">HH:mm</mat-hint>
+                @if (getControl('time', 'entryTime').invalid) {
+                <mat-error>* Required</mat-error>
+                }
+            </mat-form-field>
+        </div>
+
+        <div formGroupName="exitTime" class="w-full flex flex-row space-x-4 mt-4">
+            <mat-form-field class="w-full">
+                <mat-label>Exit Date</mat-label>
+                <input matInput placeholder="Enter Exit Date" formControlName="date" [required]="isExitTimeRequired"
+                    [matDatepicker]="exitDatePicker" />
+                <mat-datepicker-toggle matIconSuffix [for]="exitDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #exitDatePicker></mat-datepicker>
+                <mat-hint [align]="'end'">MM/DD/YYYY</mat-hint>
+                @if (getControl('date', 'exitTime').invalid) {
+                <mat-error>* Required</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+                <mat-label>Exit Time</mat-label>
+                <input matInput placeholder="Enter Exit Time" formControlName="time" [required]="isExitTimeRequired"
+                    maxlength="5" />
+                <mat-hint [align]="'end'">HH:mm</mat-hint>
+                @if (getControl('time', 'exitTime').invalid) {
+                <mat-error>* Required</mat-error>
+                }
+            </mat-form-field>
+        </div>
+
+        <div class="w-full flex flex-row space-x-4 mt-4">
+            <mat-form-field class="w-full">
+                <mat-label>Vehicle Status</mat-label>
+                <mat-select formControlName="status" placeholder="Select Parking Status" required>
+                    @for (option of vehicleStatusOptions; track option.value) {
+                    <mat-option [value]="option.value">{{option.name}}</mat-option>
+                    }
+                </mat-select>
+                @if (getControl('status').invalid) {
+                <mat-error>* Required</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+                <mat-label>Parking Charge</mat-label>
+                <input matInput placeholder="Enter Parking Charge" formControlName="parkingCharge" required />
+                @if (getControl('parkingCharge').invalid) {
+                <mat-error>* Required</mat-error>
+                }
+            </mat-form-field>
+        </div>
+
+        <div class="w-full flex justify-end items-center space-x-4">
+            <button class="action" [disabled]="!canSave" mat-raised-button color="primary">
+                Save
+            </button>
+        </div>
+    </form>
+
+</div>
