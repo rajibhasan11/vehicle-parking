@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { BasePage } from '../../../commons/base.page';
 import { getDisplayDate } from '../../../models/time';
 import { Vehicle } from '../../../models/vehicles';
 import { VehiclesService } from './vehicles.service';
@@ -12,7 +12,7 @@ import { VehiclesService } from './vehicles.service';
   styleUrl: './vehicles.component.scss',
   providers: [VehiclesService]
 })
-export class VehiclesComponent implements OnInit, OnDestroy {
+export class VehiclesComponent extends BasePage implements OnInit {
 
   displayedColumns: string[] = [
     'ownerName',
@@ -26,23 +26,20 @@ export class VehiclesComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<Vehicle>;
 
-  private subscriptions = new Subscription();
-
   constructor(
     private service: VehiclesService,
     private router: Router
-  ) { }
-
-  ngOnInit(): void {
-    const sub = this.service.vehicles$.subscribe((vehicles: Vehicle[]) => {
-      this.dataSource.data = vehicles;
-    });
-    this.subscriptions.add(sub);
-    this.service.loadVehicles();
+  ) {
+    super();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+  ngOnInit(): void {
+    this.addSubscription(
+      this.service.vehicles$.subscribe((vehicles: Vehicle[]) => {
+        this.dataSource.data = vehicles;
+      })
+    );
+    this.service.loadVehicles();
   }
 
   editVehicle(vehicle: Vehicle): void {

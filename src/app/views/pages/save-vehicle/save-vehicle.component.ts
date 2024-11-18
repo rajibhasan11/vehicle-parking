@@ -1,8 +1,8 @@
 import { LocationStrategy } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { BasePage } from '../../../commons/base.page';
 import { SelectOption } from '../../../models/selection';
 import { ToastService } from '../../../services/toast.service';
 import { VehicleService } from './vehicle.service';
@@ -13,11 +13,9 @@ import { VehicleService } from './vehicle.service';
   styleUrl: './save-vehicle.component.scss',
   providers: [VehicleService]
 })
-export class SaveVehicleComponent {
+export class SaveVehicleComponent extends BasePage implements OnInit {
 
   form!: FormGroup;
-
-  private subscriptions = new Subscription();
 
   get vehicleTypeOptions(): SelectOption[] {
     return this.service.vehicleTypeOptions;
@@ -66,34 +64,32 @@ export class SaveVehicleComponent {
     private formBuilder: FormBuilder,
     private service: VehicleService,
     private toast: ToastService
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.createForm();
 
     if (this.isEditFlow) {
-      const sub = this.route.params.subscribe(params => {
-        const id: string = params['id'];
-        if (!id) {
-          this.toast.showMessage('Vehicle id not found in URL', 'warn');
-          return;
-        }
-        const vehicle = this.service.getVehicle(id);
-        if (!vehicle) {
-          this.form.disable();
-          this.toast.showMessage('Vehicle not found', 'warn');
-          return;
-        }
-        delete vehicle.id;
-        this.form.setValue(vehicle);
-      });
-      this.subscriptions.add(sub);
+      this.addSubscription(
+        this.route.params.subscribe(params => {
+          const id: string = params['id'];
+          if (!id) {
+            this.toast.showMessage('Vehicle id not found in URL', 'warn');
+            return;
+          }
+          const vehicle = this.service.getVehicle(id);
+          if (!vehicle) {
+            this.form.disable();
+            this.toast.showMessage('Vehicle not found', 'warn');
+            return;
+          }
+          delete vehicle.id;
+          this.form.setValue(vehicle);
+        })
+      );
     }
-
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
   }
 
   private createForm(): void {

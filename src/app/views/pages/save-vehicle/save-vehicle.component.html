@@ -1,5 +1,9 @@
-<div class="header h-14 px-6 flex flex-row items-center">
-    <div class="flex flex-row space-x-2">
+<div class="header h-14 px-6 flex flex-row">
+    <div class="flex flex-row items-center space-x-2">
+        <a [routerLink]="['/']" mat-icon-button color="primary">
+            <mat-icon>home</mat-icon>
+        </a>
+        <mat-icon style="opacity: 0.50;">chevron_right</mat-icon>
         <a [routerLink]="['/vehicles']" class="text-xl text-zinc-700 hover:underline underline-offset-4">
             Viehicles
         </a>

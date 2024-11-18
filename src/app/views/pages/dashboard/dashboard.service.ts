@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as echarts from 'echarts';
 import { EChartsType, ResizeOpts } from 'echarts';
 import 'echarts/theme/macarons.js';
-import { fromEvent } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { BaseService } from '../../../commons/base.service';
 import { format } from '../../../models/time';
 import { RequestService } from '../../../services/request/request.service';
@@ -12,8 +12,6 @@ import { RequestService } from '../../../services/request/request.service';
 export class DashboardService extends BaseService {
 
   vehicleInfo: any;
-
-  private parkedVehicles: any[] = [];
 
   private pieChartOption: any = {
     title: {
@@ -42,11 +40,21 @@ export class DashboardService extends BaseService {
     }
   };
 
+  private pieSubject = new Subject<any[]>;
+  pie$ = this.pieSubject.asObservable();
+
+  private readonly charts: EChartsType[] = [];
+
   constructor(
     private request: RequestService,
     private titleCase: TitleCasePipe
   ) {
     super();
+  }
+
+  protected override onDestroy(): void {
+    this.disposeCharts();
+    super.onDestroy();
   }
 
   getVehiclesInfo(date: Date): void {
@@ -55,13 +63,15 @@ export class DashboardService extends BaseService {
   }
 
   getParkedVehicles(): void {
-    this.parkedVehicles = this.request.getParkedVehicles();
+    const data = this.request.getParkedVehicles();
+    this.pieSubject.next(data);
   }
 
-  drawPieChart(): void {
+  drawPieChart(parkedVehicles: any[]): void {
     const el = document.getElementById('pie')!;
     const chart = echarts.init(el, 'macarons'); // default theme 'macarons'
-    const data = this.parkedVehicles.map(x => {
+    this.addChart(chart);
+    const data = parkedVehicles.map(x => {
       return {
         name: this.titleCase.transform(x.type),
         value: x.options?.length || 0
@@ -74,12 +84,37 @@ export class DashboardService extends BaseService {
   }
 
   private addResizeEvent(chart: EChartsType, opts?: ResizeOpts): void {
-    this.addSubscription(fromEvent(window, 'resize').subscribe((_event: any) => {
-      if (!chart || this.isDestroyed) {
-        return;
-      }
-      chart.resize(opts);
-    }), chart.id);
+    this.addSubscription(
+      fromEvent(window, 'resize').subscribe((_event: any) => {
+        if (!chart || this.isDestroyed) {
+          return;
+        }
+        chart.resize(opts);
+      }), chart.id
+    );
+  }
+
+  private addChart(chart: EChartsType): void {
+    if (this.charts.includes(chart)) {
+      return;
+    }
+    this.charts.push(chart);
+  }
+
+  private disposeCharts(): void {
+    console.log('disposeCharts', this.charts.length);
+    const length = this.charts.length;
+    for (let i = 0; i < length; i++) {
+      const chart = this.charts[i];
+      this.disposeChart(chart);
+    }
+    this.charts.length = 0;
+  }
+
+  private disposeChart(chart: EChartsType): void {
+    if (chart && !chart.isDisposed()) {
+      chart.dispose();
+    }
   }
 
 }

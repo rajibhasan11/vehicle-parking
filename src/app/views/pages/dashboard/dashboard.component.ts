@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BasePage } from '../../../commons/base.page';
 import { DashboardService } from './dashboard.service';
 
 @Component({
@@ -8,19 +9,25 @@ import { DashboardService } from './dashboard.service';
   styleUrl: './dashboard.component.scss',
   providers: [DashboardService]
 })
-export class DashboardComponent {
+export class DashboardComponent extends BasePage implements OnInit {
 
   filterDate: Date = new Date();
 
   constructor(
     private router: Router,
     public bll: DashboardService
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.onDateChange();
+    this.addSubscription(
+      this.bll.pie$.subscribe((res: any[]) => {
+        this.bll.drawPieChart(res);
+      })
+    );
     this.bll.getParkedVehicles();
-    this.bll.drawPieChart();
   }
 
   showVehicles(): void {

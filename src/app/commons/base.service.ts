@@ -5,4 +5,6 @@ export abstract class BaseService extends Base {
     constructor() {
         super();
     }
+
+    // code here for services' common functions
 }
