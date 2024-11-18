@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
+import { BaseService } from '../../../commons/base.service';
 import { SelectOption } from '../../../models/selection';
 import { DateTime, TimeInput } from '../../../models/time';
 import { ParkingStatus, Vehicle, VehicleType } from '../../../models/vehicles';
 import { RequestService } from '../../../services/request/request.service';
 
 @Injectable()
-export class VehicleService {
+export class VehicleService extends BaseService {
 
   form!: FormGroup;
 
@@ -15,6 +16,7 @@ export class VehicleService {
   vehicleStatusOptions: SelectOption[];
 
   constructor(private request: RequestService) {
+    super();
     this.vehicleTypeOptions = Object.entries(VehicleType).map(x => new SelectOption(x[0], x[1]));
     this.vehicleStatusOptions = Object.entries(ParkingStatus).map(x => new SelectOption(x[0], x[1]));
   }

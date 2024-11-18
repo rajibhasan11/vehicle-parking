@@ -3,7 +3,7 @@ import moment from 'moment';
 import { isUndefined } from '../../utils/util';
 
 /*
- This service is performing as a Baceend for this VehicleParking application.
+ This service is performing as a Backend Service for this VehicleParking application.
 */
 @Injectable({
   providedIn: 'root'
@@ -59,10 +59,6 @@ export class StorageService {
     return json ? JSON.parse(json) : [];
   }
 
-  // • Total cars parked
-  // • Total empty slot
-  // • Vehicle type info. (Show number of each type of vehicle) A card that shows the
-  //   vehicles parked for more than two hours.
   getVehiclesInfo(date: string): any {
     const vehicles = this.getVehicles();
     const carsParked = vehicles.filter(x => isSameDate(x.entryTime, date) && x.status == 'in');
@@ -97,6 +93,50 @@ export class StorageService {
         return acc;
       }, {})
     ).map(([type, options]) => ({ type, options }));
+    return groupedList;
+  }
+
+  getParkingData(period: string): any[] {
+    const vehicles = this.getVehicles();
+    const carsParked = vehicles.map(x => {
+      const dt = moment(x.entryTime, 'YYYY-MM-DD HH:mm');
+      switch (period) {
+        case 'daily':
+          x.sortValue = dt.hour();
+          x.category = dt.format('HH');
+          break;
+        case 'weekly':
+          x.sortValue = dt.day();
+          x.category = dt.format('dddd').substring(0, 3);
+          break;
+        case 'monthly':
+          x.sortValue = dt.month();
+          x.category = dt.format('MMM');
+          break;
+        default:
+          break;
+      }
+      return x;
+    });
+
+    if (period != 'daily') {
+      carsParked.sort((a: any, b: any) => a.sortValue - b.sortValue);
+    }
+
+    const groupedList = Object.entries(
+      carsParked.reduce((acc, { id, type, category }) => {
+        if (!acc[category]) {
+          acc[category] = [];
+        }
+        acc[category].push({ id, type });
+        return acc;
+      }, {})
+    ).map(([category, options]) => ({ category, options }));
+
+    if (period == 'daily') {
+      groupedList.sort((a: any, b: any) => a.category - b.category)
+    }
+
     return groupedList;
   }
 

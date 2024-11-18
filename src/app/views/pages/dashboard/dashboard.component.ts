@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResizeSensor } from 'css-element-queries';
 import { BasePage } from '../../../commons/base.page';
+import { SelectOption } from '../../../models/selection';
+import { Peirod } from '../../../models/time';
 import { ChartService } from '../../../services/chart/chart.service';
 import { DashboardService } from './dashboard.service';
 
@@ -15,6 +17,8 @@ export class DashboardComponent extends BasePage implements OnInit {
 
   filterDate: Date = new Date();
 
+  period: Peirod = Peirod.Daily;
+
   private contentSize: number = 0;
 
   get isSmallScreen(): boolean {
@@ -25,22 +29,50 @@ export class DashboardComponent extends BasePage implements OnInit {
     return this.isSmallScreen;
   }
 
+  get totalCarParked(): number {
+    return this.service.vehicleInfo?.totalCarParked || 0;
+  }
+
+  get totalEmptySlots(): number {
+    return this.service.vehicleInfo?.totalEmptySlots || 0;
+  }
+
+  get vehicleInfo(): any[] {
+    return this.service.vehicleInfo?.vehicles || [];
+  }
+
+  get periodOptions(): SelectOption[] {
+    return this.service.periodOptions;
+  }
+
   constructor(
     private router: Router,
-    public bll: DashboardService
+    private service: DashboardService
   ) {
     super();
   }
 
   ngOnInit(): void {
+
     this.addResizeListener();
-    this.onDateChange();
+
     this.addSubscription(
-      this.bll.pie$.subscribe((res: any[]) => {
-        this.bll.drawPieChart(res);
+      this.service.pieChart$.subscribe((res: any[]) => {
+        this.service.drawPieChart(res);
       })
     );
-    this.bll.getParkedVehicles();
+
+    this.addSubscription(
+      this.service.lineChart$.subscribe((res: any[]) => {
+        this.service.drawLineChart(res);
+      })
+    );
+
+    this.service.getParkedVehicles();
+
+    this.onDateChange(); // initial selection with default value
+    this.onPeriodSelectionChange(); // initial selection with default value
+
   }
 
   private addResizeListener(): void {
@@ -57,7 +89,11 @@ export class DashboardComponent extends BasePage implements OnInit {
   }
 
   onDateChange(): void {
-    this.bll.getVehiclesInfo(this.filterDate);
+    this.service.getVehiclesInfo(this.filterDate);
+  }
+
+  onPeriodSelectionChange(): void {
+    this.service.getParkingData(this.period);
   }
 
 }

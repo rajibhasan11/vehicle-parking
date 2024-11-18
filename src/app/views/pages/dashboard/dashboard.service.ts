@@ -2,12 +2,15 @@ import { TitleCasePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { BaseService } from '../../../commons/base.service';
-import { format } from '../../../models/time';
+import { SelectOption } from '../../../models/selection';
+import { format, Peirod } from '../../../models/time';
 import { ChartService } from '../../../services/chart/chart.service';
 import { RequestService } from '../../../services/request/request.service';
 
 @Injectable()
 export class DashboardService extends BaseService {
+
+  periodOptions: SelectOption[];
 
   vehicleInfo: any;
 
@@ -39,15 +42,35 @@ export class DashboardService extends BaseService {
     }
   };
 
-  private pieSubject = new Subject<any[]>;
-  pie$ = this.pieSubject.asObservable();
+  private lineChartOption: any = {
+    xAxis: {
+      type: 'category',
+      data: [],
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series:
+    {
+      data: [],
+      type: 'line',
+      smooth: true
+    }
+  };
+
+  private pieChartSubject = new Subject<any[]>;
+  pieChart$ = this.pieChartSubject.asObservable();
+
+  private lineChartSubject = new Subject<any[]>;
+  lineChart$ = this.lineChartSubject.asObservable();
 
   constructor(
     private request: RequestService,
-    private chart: ChartService,
-    private titleCase: TitleCasePipe
+    private titleCase: TitleCasePipe,
+    private chart: ChartService
   ) {
     super();
+    this.periodOptions = Object.entries(Peirod).map(x => new SelectOption(x[0], x[1]));
   }
 
   drawPieChart(parkedVehicles: any[]): void {
@@ -58,8 +81,23 @@ export class DashboardService extends BaseService {
         value: x.options?.length || 0
       };
     });
-    opt.series.data.push(...data);
+    opt.series.data = data;
     this.chart.draw('pie', opt);
+  }
+
+  drawLineChart(parkingData: any[]): void {
+    console.log(parkingData);
+    const opt = this.lineChartOption;
+    const category: string[] = [];
+    const data: number[] = [];
+    for (let i = 0; i < parkingData.length; i++) {
+      const d = parkingData[i];
+      category.push(d.category);
+      data.push(d.options?.length || 0);
+    }
+    opt.xAxis.data = category;
+    opt.series.data = data;
+    this.chart.draw('line', opt);
   }
 
   getVehiclesInfo(date: Date): void {
@@ -69,7 +107,12 @@ export class DashboardService extends BaseService {
 
   getParkedVehicles(): void {
     const data = this.request.getParkedVehicles();
-    this.pieSubject.next(data);
+    this.pieChartSubject.next(data);
+  }
+
+  getParkingData(period: Peirod): void {
+    const data = this.request.getParkingData(period);
+    this.lineChartSubject.next(data);
   }
 
 }

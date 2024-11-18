@@ -11,7 +11,7 @@
 
         <mat-card-content>
 
-            <mat-form-field class="w-1/2" [class.w-full]="isSmallScreen">
+            <mat-form-field class="w-1/2" [class.w-full]="isSmallScreen" appearance="outline">
                 <mat-label>Choose a date</mat-label>
                 <input matInput [(ngModel)]="filterDate" [matDatepicker]="filterDatePicker"
                     (dateChange)="onDateChange()" />
@@ -21,15 +21,15 @@
             </mat-form-field>
 
             <div class="h-12 text-zinc-700 mt-2">
-                Total cars parked {{bll.vehicleInfo?.totalCarParked}}
+                Total cars parked {{totalCarParked}}
             </div>
 
             <div class="h-12 text-zinc-700">
-                Total empty slots {{bll.vehicleInfo?.totalEmptySlots}}
+                Total empty slots {{totalEmptySlots}}
             </div>
 
             <div class="flex flex-wrap items-center gap-2 mt-2">
-                @for (v of bll.vehicleInfo?.vehicles; track v.type) {
+                @for (v of vehicleInfo; track v.type) {
                 <div class="w-32 flex flex-col items-center border border-slate-300 rounded-sm p-2 pb-0">
                     <span class="h-8 text-zinc-700">{{v.type | uppercase}}</span>
                     <span class="h-8 text-zinc-700">{{v.options?.length}}</span>
@@ -52,7 +52,16 @@
 
         <mat-card class="w-full" appearance="outlined">
             <mat-card-content>
-                <div class="resize_chart">
+                <mat-form-field class="w-full" appearance="outline">
+                    <mat-label>Parking Summary</mat-label>
+                    <mat-select [(ngModel)]="period" (selectionChange)="onPeriodSelectionChange()">
+                        @for (option of periodOptions; track option.value) {
+                        <mat-option [value]="option.value">{{option.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <div class="resize_chart line-chart">
                     <div id="line" class="w-full h-full"></div>
                 </div>
             </mat-card-content>

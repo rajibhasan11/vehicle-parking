@@ -1,5 +1,16 @@
 import moment from 'moment';
 
+export enum Peirod {
+    Daily = 'daily',
+    Weekly = 'weekly',
+    Monthly = 'monthly',
+}
+
+export interface TimeRange {
+    start: any; // start time
+    end: any; // end time
+}
+
 export class TimeInput {
 
     date: string;
@@ -24,12 +35,11 @@ export class DateTime {
     time: string | null;
 
     constructor(str: string) {
-        //const array = str ? str.split(' ') : [];
-        //const date: string = array[0];
-        //const time: string = array[1];
-        str = (str || '').trim();
-        this.date = str ? moment(str, 'YYYY-MM-DD').toDate() : null;
-        this.time = str ? moment(str, 'HH:mm').format('HH:mm') : null;
+        const array = str ? str.split(' ') : [];
+        const date: string = array[0];
+        const time: string = array[1];
+        this.date = date ? moment(date, 'YYYY-MM-DD').toDate() : null;
+        this.time = time ? moment(time, 'HH:mm').format('HH:mm') : null;
     }
 
 }

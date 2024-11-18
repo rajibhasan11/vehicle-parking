@@ -29,13 +29,17 @@ export class ChartService extends Base {
 
   draw(id: string, opt: any): void {
     const el = document.getElementById(id);
-    const chart = echarts.init(el);
-    this.addChart(chart);
-    chart.setOption(opt);
-    if (this.isMobile && el) {
-      this.addResizeSensor(el, chart, opt); // initial resizing on small device
+    if (!el) return;
+    let chart = echarts.getInstanceByDom(el);
+    if (chart == null) {
+      chart = echarts.init(el);
+      this.addChart(chart);
+      if (this.isMobile && el) {
+        this.addResizeSensor(el, chart, opt); // initial resizing on small device
+      }
+      this.addResizeListener(chart);
     }
-    this.addResizeListener(chart);
+    chart.setOption(opt, true);
   }
 
   private addResizeSensor(el: HTMLElement, chart: EChartsType, opts?: ResizeOpts): void {

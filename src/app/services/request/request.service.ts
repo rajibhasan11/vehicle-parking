@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Vehicle } from '../../models/vehicles';
 import { StorageService } from '../storage/storage.service';
+import { Peirod } from '../../models/time';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,10 @@ export class RequestService {
 
   getParkedVehicles(): any[] {
     return this.storage.getParkedVehicles();
+  }
+
+  getParkingData(period: Peirod): any[] {
+    return this.storage.getParkingData(period);
   }
 
 }

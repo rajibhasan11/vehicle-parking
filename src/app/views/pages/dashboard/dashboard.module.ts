@@ -5,8 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { RoutingModule } from './dashbaord-routing.module';
 import { DashboardComponent } from './dashboard.component';
 
@@ -19,8 +19,8 @@ import { DashboardComponent } from './dashboard.component';
     MatButtonModule,
     MatCardModule,
     MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ]
 })
 export class MaterialModule { }

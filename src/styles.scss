@@ -25,9 +25,6 @@ $vehicle-parking-theme: mat.define-theme((color: (theme-type: light,
 // that you are using.
 :root {
   @include mat.all-component-themes($vehicle-parking-theme);
-  --mat-color-primary: #00c77b;
-  --mat-color-warn: #ee748a;
-  --mat-color-hint: #ff7d00;
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.
@@ -52,16 +49,44 @@ body {
   border-bottom: 1px solid #e1e1e1;
 }
 
-.mat-snack-bar-container .success {
-  background-color: var(--mat-color-primary);
+.mdc-notched-outline__notch {
+  border-right: none;
 }
 
-.mat-snack-bar-container .warn {
-  background-color: var(--mat-color-warn);
+.mat-mdc-snack-bar-container {
+  &.success {
+    --mdc-snackbar-container-color: #00c77c;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+
+  .mdc-button__label {
+    color: #fff;
+  }
 }
 
-.mat-snack-bar-container .hint {
-  background-color: var(--mat-color-hint);
+.mat-mdc-snack-bar-container {
+  &.warn {
+    --mdc-snackbar-container-color: #ef1b42;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+
+  .mdc-button__label {
+    color: #fff;
+  }
+}
+
+.mat-mdc-snack-bar-container {
+  &.hint {
+    --mdc-snackbar-container-color: #0077ff;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+
+  .mdc-button__label {
+    color: #fff;
+  }
 }
 
 .resize_chart {
