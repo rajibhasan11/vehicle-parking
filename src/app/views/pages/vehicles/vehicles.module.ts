@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { RoutingModule } from './vehicles-routing.module';
 import { VehiclesComponent } from './vehicles.component';
@@ -12,7 +14,9 @@ import { VehiclesComponent } from './vehicles.component';
     MatButtonModule,
     MatDialogModule,
     MatIconModule,
+    MatPaginatorModule,
     MatTableModule,
+    MatSortModule
   ]
 })
 export class MaterialModule { }

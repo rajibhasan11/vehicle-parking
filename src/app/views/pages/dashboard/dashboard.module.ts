@@ -20,7 +20,7 @@ import { DashboardComponent } from './dashboard.component';
     MatCardModule,
     MatDatepickerModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
   ]
 })
 export class MaterialModule { }

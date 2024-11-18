@@ -86,7 +86,6 @@ export class DashboardService extends BaseService {
   }
 
   drawLineChart(parkingData: any[]): void {
-    console.log(parkingData);
     const opt = this.lineChartOption;
     const category: string[] = [];
     const data: number[] = [];

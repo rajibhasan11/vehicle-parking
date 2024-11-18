@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResizeSensor } from 'css-element-queries';
@@ -45,8 +46,13 @@ export class DashboardComponent extends BasePage implements OnInit {
     return this.service.periodOptions;
   }
 
+  get isMobile(): boolean {
+    return this.platform.ANDROID || this.platform.IOS;
+  }
+
   constructor(
     private router: Router,
+    private platform: Platform,
     private service: DashboardService
   ) {
     super();
@@ -86,6 +92,10 @@ export class DashboardComponent extends BasePage implements OnInit {
 
   showVehicles(): void {
     this.router.navigateByUrl('/vehicles');
+  }
+
+  addVehicle(): void {
+    this.router.navigateByUrl('/add-vehicle');
   }
 
   onDateChange(): void {

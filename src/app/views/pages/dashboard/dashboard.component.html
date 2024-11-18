@@ -1,8 +1,15 @@
-<div class="header h-14 px-6 flex items-center justify-between">
+<div class="header h-14 px-6 flex flex-row items-center justify-between">
     <span class="text-xl text-zinc-700">Dashboard</span>
-    <button mat-stroked-button color="primary" (click)="showVehicles()">
-        Vehicles
-    </button>
+    <div class="flex flex-row space-x-4">
+        <button mat-stroked-button color="primary" (click)="showVehicles()">
+            Vehicles
+        </button>
+        @if(!isMobile) {
+        <button mat-stroked-button color="primary" (click)="addVehicle()">
+            Add Vehicle
+        </button>
+        }
+    </div>
 </div>
 
 <div id="content" class="p-6 flex flex-col space-y-6">
@@ -12,7 +19,7 @@
         <mat-card-content>
 
             <mat-form-field class="w-1/2" [class.w-full]="isSmallScreen" appearance="outline">
-                <mat-label>Choose a date</mat-label>
+                <mat-label>Filter by date</mat-label>
                 <input matInput [(ngModel)]="filterDate" [matDatepicker]="filterDatePicker"
                     (dateChange)="onDateChange()" />
                 <mat-datepicker-toggle matIconSuffix [for]="filterDatePicker"></mat-datepicker-toggle>

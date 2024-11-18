@@ -54,7 +54,6 @@ export class SaveVehicleComponent extends BasePage implements OnInit {
   }
 
   get isExitTimeRequired(): boolean {
-    return false;
     return this.isEditFlow;
   }
 
@@ -111,8 +110,8 @@ export class SaveVehicleComponent extends BasePage implements OnInit {
         time: ['', [Validators.required]]
       }),
       exitTime: this.formBuilder.group({
-        date: [''], // this.isExitTimeRequired ? [Validators.required] : []
-        time: ['']  // this.isExitTimeRequired ? [Validators.required] : []
+        date: ['', this.isExitTimeRequired ? [Validators.required] : []],
+        time: ['', this.isExitTimeRequired ? [Validators.required] : []]
       }),
       parkingCharge: ['', [Validators.required]]
     });
