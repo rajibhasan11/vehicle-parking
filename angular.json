@@ -30,7 +30,7 @@
             },
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "baseHref": "/parking/",
+            "baseHref": "/",
             "polyfills": [
               "zone.js"
             ],
@@ -40,7 +40,8 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/_redirects"
             ],
             "styles": [
               "src/styles.scss"

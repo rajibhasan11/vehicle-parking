@@ -16,26 +16,18 @@ $vehicle-parking-theme: mat.define-theme((color: (theme-type: light,
       density: (scale: 0,
       )));
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 :root {
   @include mat.all-component-themes($vehicle-parking-theme);
-
-  --color-primary: #05323d;
   --mat-color-primary: #00c77b;
   --mat-color-warn: #ee748a;
   --mat-color-hint: #ff7d00;
-
-  --color: var(--color-primary);
-  --info-color: var(--mat-color-hint);
-  --warn-color: var(--mat-color-warn);
-  --warn-background-color: #ee748a10;
-  --success-color: var(--mat-color-primary);
 }
 
 // Comment out the line below if you want to use the pre-defined typography utility classes.

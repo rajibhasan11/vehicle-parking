@@ -18,13 +18,13 @@ const routes: Routes = [
     loadChildren: () => import('./views/pages/vehicles/vehicles.module').then(m => m.VehiclesModule)
   },
   {
-    path: 'edit-vehicle/:id',
-    title: 'Edit Vehicle',
+    path: 'add-vehicle',
+    title: 'Add Vehicle',
     loadChildren: () => import('./views/pages/save-vehicle/save-vehicle.module').then(m => m.SaveVehicleModule)
   },
   {
-    path: 'add-vehicle',
-    title: 'Add Vehicle',
+    path: 'edit-vehicle/:id',
+    title: 'Edit Vehicle',
     loadChildren: () => import('./views/pages/save-vehicle/save-vehicle.module').then(m => m.SaveVehicleModule)
   },
   {

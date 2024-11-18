@@ -2,7 +2,6 @@ import { TitleCasePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import * as echarts from 'echarts';
 import { EChartsType, ResizeOpts } from 'echarts';
-import 'echarts/theme/macarons.js';
 import { fromEvent, Subject } from 'rxjs';
 import { BaseService } from '../../../commons/base.service';
 import { format } from '../../../models/time';
@@ -69,7 +68,7 @@ export class DashboardService extends BaseService {
 
   drawPieChart(parkedVehicles: any[]): void {
     const el = document.getElementById('pie')!;
-    const chart = echarts.init(el, 'macarons'); // default theme 'macarons'
+    const chart = echarts.init(el);
     this.addChart(chart);
     const data = parkedVehicles.map(x => {
       return {
@@ -102,7 +101,6 @@ export class DashboardService extends BaseService {
   }
 
   private disposeCharts(): void {
-    console.log('disposeCharts', this.charts.length);
     const length = this.charts.length;
     for (let i = 0; i < length; i++) {
       const chart = this.charts[i];
