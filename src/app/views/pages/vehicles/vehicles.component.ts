@@ -12,7 +12,8 @@ import { VehiclesService } from './vehicles.service';
   selector: 'app-vehicles',
   templateUrl: './vehicles.component.html',
   styleUrl: './vehicles.component.scss',
-  providers: [VehiclesService]
+  providers: [VehiclesService],
+  standalone: false
 })
 export class VehiclesComponent extends BasePage implements OnInit, AfterViewInit {
 

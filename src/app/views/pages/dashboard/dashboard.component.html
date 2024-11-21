@@ -18,7 +18,7 @@
 
         <mat-card-content>
 
-            <mat-form-field class="w-1/2" [class.w-full]="isSmallScreen" appearance="outline">
+            <mat-form-field class="w-1/2 mt-2" [class.w-full]="isSmallScreen" appearance="outline">
                 <mat-label>Filter by date</mat-label>
                 <input matInput [(ngModel)]="filterDate" [matDatepicker]="filterDatePicker"
                     (dateChange)="onDateChange()" />
@@ -51,7 +51,7 @@
 
         <mat-card class="w-full" appearance="outlined">
             <mat-card-content>
-                <div class="resize_chart">
+                <div class="resize_chart pie">
                     <div id="pie" class="!w-full !h-full"></div>
                 </div>
             </mat-card-content>
@@ -59,7 +59,7 @@
 
         <mat-card class="w-full" appearance="outlined">
             <mat-card-content>
-                <mat-form-field class="w-full" appearance="outline">
+                <mat-form-field class="w-full mt-2" appearance="outline">
                     <mat-label>Parking Summary</mat-label>
                     <mat-select [(ngModel)]="period" (selectionChange)="onPeriodSelectionChange()">
                         @for (option of periodOptions; track option.value) {
@@ -68,7 +68,7 @@
                     </mat-select>
                 </mat-form-field>
 
-                <div class="resize_chart line-chart">
+                <div class="resize_chart line">
                     <div id="line" class="w-full h-full"></div>
                 </div>
             </mat-card-content>

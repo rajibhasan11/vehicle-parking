@@ -16,9 +16,9 @@ $vehicle-parking-theme: mat.define-theme((color: (theme-type: light,
       density: (scale: 0,
       )));
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -51,6 +51,7 @@ body {
 
 .mdc-notched-outline__notch {
   border-right: none;
+  border-bottom: none;
 }
 
 .mat-mdc-table-sticky-border-elem-right {

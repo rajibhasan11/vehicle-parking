@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { TitleCasePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -50,10 +51,13 @@ export class DashboardService extends BaseService {
     yAxis: {
       type: 'value'
     },
+    grid: {
+      top: 10
+    },
     series:
     {
-      data: [],
       type: 'line',
+      data: [],
       smooth: true
     }
   };
@@ -64,7 +68,12 @@ export class DashboardService extends BaseService {
   private lineChartSubject = new Subject<any[]>;
   lineChart$ = this.lineChartSubject.asObservable();
 
+  get isMobile(): boolean {
+    return this.platform.ANDROID || this.platform.IOS;
+  }
+
   constructor(
+    private platform: Platform,
     private request: RequestService,
     private titleCase: TitleCasePipe,
     private chart: ChartService
@@ -82,6 +91,7 @@ export class DashboardService extends BaseService {
       };
     });
     opt.series.data = data;
+    opt.series.top = this.isMobile ? -10 : 30;
     this.chart.draw('pie', opt);
   }
 

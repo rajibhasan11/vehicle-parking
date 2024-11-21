@@ -1,5 +1,9 @@
-.line-chart {
-    height: calc(400px - 76px);
+.pie {
+    height: calc(400px + 76px - 15px) !important;
+}
+
+.line {
+    height: calc(400px - 24px) !important;
 }
 
 .mat-mdc-form-field {

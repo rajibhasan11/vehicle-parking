@@ -1,4 +1,3 @@
-import { Platform } from '@angular/cdk/platform';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResizeSensor } from 'css-element-queries';
@@ -12,7 +11,8 @@ import { DashboardService } from './dashboard.service';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  providers: [ChartService, DashboardService]
+  providers: [ChartService, DashboardService],
+  standalone: false
 })
 export class DashboardComponent extends BasePage implements OnInit {
 
@@ -47,12 +47,11 @@ export class DashboardComponent extends BasePage implements OnInit {
   }
 
   get isMobile(): boolean {
-    return this.platform.ANDROID || this.platform.IOS;
+    return this.service.isMobile;
   }
 
   constructor(
     private router: Router,
-    private platform: Platform,
     private service: DashboardService
   ) {
     super();

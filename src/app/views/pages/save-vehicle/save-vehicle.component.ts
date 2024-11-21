@@ -11,7 +11,8 @@ import { VehicleService } from './vehicle.service';
   selector: 'app-save-vehicle',
   templateUrl: './save-vehicle.component.html',
   styleUrl: './save-vehicle.component.scss',
-  providers: [VehicleService]
+  providers: [VehicleService],
+  standalone: false
 })
 export class SaveVehicleComponent extends BasePage implements OnInit {
 
